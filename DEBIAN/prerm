@@ -1,0 +1,4 @@
+#!/bin/sh
+[ -x "/etc/init.d/proof_restarter" ] && /etc/init.d/proof_restarter stop
+rm -f /etc/rc2.d/S*proof_restarter
+rm -f /etc/rc3.d/S*proof_restarter

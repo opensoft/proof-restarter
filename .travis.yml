@@ -1,0 +1,26 @@
+sudo: false
+dist: trusty
+
+addons:
+  apt:
+    update: true
+    packages:
+      - fakeroot
+
+language: python
+python: 3.6
+
+env:
+  global:
+    - secure: "aFMHd9CcL+gKioM7lKIZzLHi7Y7LstVb7mYohVn1R1/cQlonu+qAtx1CYfC9R3owePFBnKx3sRphjfYQ7w9K01DkL+rfLGTqseYZVOpDv1xIJSrbiuZtp/p56+H/8XSUfQfMpoLfqjcXJxxAz3kna12EQugxENzsvDyvvpeNZIN1H30LKlghezSi9ygds+YMbqlxFF26jA+mEb4r2ky8u9Zyn2DIcjVqe6zlT8v91n/0yf+Sx3ZnNy9RmXdBSX0ho5rvagqoVIUBGt8oA9T9hLiFlWab7I5MKq/fSB3SKR0ir1X6dd8HJqzzih327zcpqmfhqgwF5KJdxpq039RgeHu9/J57mhjY0UHJ7AWRf3TcTWdSHszMWBWfNCmT2TBapLG6zeFBPqt9woEoKJlwRt4VWKeYnbVKDxsE/ilWyo64PDaJNM6I41wJNNC9VcgZcS6UHaun0dx8XwVKER2qJchTw4coN69m2F9FkG++0lGC5q8wODypOL8I1B8By+CDzhaKc44K632W7jnQgESoeVsnLa+lHLi9mKBglUt8zVcRea3EBSGz07NxOV7DGfE2vjfdubiz7TFNaUAuJUAo+soqOagLXtLYqNXqCLq9BaREXM3R7JFdfQvWJf4azXcC+UMoNqv71biIvca8VXSUHRKEo873ocPuJw8iSRF5FN0="
+    - secure: "GdMyNMhcRniwUv/x3BpjgSyWa0d3i7WLAh9HKXiaBYdajO2zdAeJSq9ygdiu/JoqFvEw5YTTE1aXnMKFkgSKXYG8e1yairZhUVKp4lYJfNQ6Jand9Y6PVdpiAJIoPIr4Wk9rc0x9qXVfQxpyTp5XUVfH9Rq7OgCWhLtwFlNZw9RRb+FDj/gaFL1n10Qfykz9Uo1HUBHEs5dR3INenRi15qozlSY/GApqfovIFkAu56877wto3XXEm3ELa8R1xulFuPvw806fJ00gMVfue/Yn1+JjSqdPmY5r5tHyKJRmDdEbTyiWu/ieWPGvWc0wQ5ef+LPCqoxLUh+y8YtnDLl2UUZ8h1V4qYLVt/kCt73qcoYjyi2eVWUDDmZeXnb5biyuFZsoNzSmz7WiCqW6hiBbBtPuMHi+3TIdAtKyT4LITlGsguN7pZzC6pjMD6u9eeYScdqXvK8DANfKXCVeEXaCYLPx8u43PFZOFzaVscdyUs/GtyOf9b6hOQ015VXOJKdRAix9bbJQR3pxkKeX3cqux95dlZ8RbIdfM4ibBIymI8fXI4g9Py1nE3qz55g7tNkgA2OXA9k3cuG255C4BOOPEIgEc8mly/0NSKUH7gvevRNoCwm4mvl6+LqKPUCiImPROB3rG7HPP7pH7JqEEGPfTAnKZsJmlgDSlG2QQT8RDpg="
+
+
+before_install: export -f travis_fold && export -f travis_time_start && export -f travis_time_finish && export -f travis_nanoseconds
+before_script: pip install awscli
+script:
+  - export PROJECT_ROOT=`pwd`
+  - export PACKAGE_NAME=`basename "$PROJECT_ROOT"`
+  - rm -rf README.md .travis.yml .git*
+  - fakeroot dpkg-deb --build "$PROJECT_ROOT"
+  - aws s3 cp "../$PACKAGE_NAME.deb" s3://proof.travis.builds/__dependencies/proof-restarter.deb

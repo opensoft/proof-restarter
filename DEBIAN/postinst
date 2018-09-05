@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if ! id -u "proof" >/dev/null 2>&1; then
+        adduser --system --group --home /home/proof --shell /bin/bash proof
+fi
+
+[ -x "/etc/init.d/proof_restarter" ] && /etc/init.d/proof_restarter start
+cd /etc/rc2.d
+ln -s ../init.d/proof_restarter S98proof_restarter
+cd /etc/rc3.d
+ln -s ../init.d/proof_restarter S98proof_restarter

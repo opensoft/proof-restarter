@@ -1,0 +1,10 @@
+Package: proof-restarter
+Version: 1.0.0
+Section: misc
+Homepage: https://github.com/opensoft/proof-restarter
+Depends: daemontools
+Conflicts: proof (<< 1)
+Architecture: all
+Maintainer: Denis Kormalev <denis.kormalev@opensoftdev.com>
+Description: Proof Restarter
+ svscan-based (daemontools) script to automatically restart proof-based services.
