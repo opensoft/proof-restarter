@@ -7,4 +7,4 @@ Conflicts: proof (<< 1)
 Architecture: all
 Maintainer: Denis Kormalev <denis.kormalev@opensoftdev.com>
 Description: Proof Restarter
- svscan-based (daemontools) script to automatically restart proof-based services.
+ svscan-based (daemontools) script to automatically restart proof-based applications.
